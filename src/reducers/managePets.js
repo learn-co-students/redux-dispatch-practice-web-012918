@@ -1,12 +1,30 @@
 export let state;
 
 
-export function managePets(){
+export function managePets(state = {pets: []}, action){
+  switch (action.type){
+    case("ADD_PET"):
+      return {...state, pets: [...state.pets, action.pet]}
+    case("REMOVE_PET"):
+      return {...state, pets: [...state.pets.filter(pet => pet.id != action.id)]}
+    default:
+      return state
+  }
+
+
 }
 
-export function dispatch(){
+export function dispatch(action){
+  state = managePets(state, action)
+  render()
 }
 
 export function render(){
+  let petsList = document.createElement('ul')
+  let container = document.getElementById('container')
+  for(let i = 0; i < state.pets.length; i++){
+    petsList.innerHTML += '<li>' + state.pets[i].name + '</li>'
+  }
+  container.innerHTML = ('<ul>' + petsList.innerHTML + '</ul>')
 
 }
